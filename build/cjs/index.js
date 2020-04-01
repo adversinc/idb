@@ -77,11 +77,7 @@ function getMethod(target, prop) {
     cachedMethods.set(prop, method);
     return method;
 }
-wrapIdbValue.replaceTraps((oldTraps) => ({
-    ...oldTraps,
-    get: (target, prop, receiver) => getMethod(target, prop) || oldTraps.get(target, prop, receiver),
-    has: (target, prop) => !!getMethod(target, prop) || oldTraps.has(target, prop),
-}));
+wrapIdbValue.replaceTraps((oldTraps) => (Object.assign(Object.assign({}, oldTraps), { get: (target, prop, receiver) => getMethod(target, prop) || oldTraps.get(target, prop, receiver), has: (target, prop) => !!getMethod(target, prop) || oldTraps.has(target, prop) })));
 
 exports.unwrap = wrapIdbValue.unwrap;
 exports.wrap = wrapIdbValue.wrap;
